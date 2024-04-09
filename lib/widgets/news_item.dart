@@ -18,7 +18,7 @@ class NewsItem extends StatelessWidget {
     Typography typography = FluentTheme.of(context).typography;
     return HoverButton(
         onPressed: (() async {
-          if (!await launch(article.uri)) {
+          if (!await launchUrl(Uri.parse(article.uri))) {
             log('Could not launch url ${article.uri}');
           }
         }),
@@ -74,25 +74,26 @@ class NewsItem extends StatelessWidget {
                         DropDownButton(
                             title: const Icon(FluentIcons.share),
                             items: [
-                              DropDownButtonItem(
-                                  title: const Text('Open in Browser'),
+                              MenuFlyoutItem(
+                                  text: const Text('Open in Browser'),
                                   leading: const Icon(FluentIcons.edge_logo),
-                                  onTap: (() async {
-                                    if (!await launch(article.uri)) {
+                                  onPressed: (() async {
+                                    if (!await launchUrl(
+                                        Uri.parse(article.uri))) {
                                       log('Could not launch url ${article.uri}');
                                     }
                                   })),
-                              DropDownButtonItem(
-                                  title: const Text('Send'),
+                              MenuFlyoutItem(
+                                  text: const Text('Send'),
                                   leading: const Icon(FluentIcons.send),
-                                  onTap: (() {
+                                  onPressed: (() {
                                     Share.share(
                                         'Check out this article ${article.uri}');
                                   })),
-                              DropDownButtonItem(
-                                  title: const Text('Copy URL'),
+                              MenuFlyoutItem(
+                                  text: const Text('Copy URL'),
                                   leading: const Icon(FluentIcons.copy),
-                                  onTap: (() {
+                                  onPressed: (() {
                                     FlutterClipboard.copy(article.uri).then(
                                         (value) => showCopiedSnackbar(
                                             context, article.uri));
@@ -107,9 +108,8 @@ class NewsItem extends StatelessWidget {
   }
 
   void showCopiedSnackbar(BuildContext context, String copiedText) {
-    showSnackbar(
-      context,
-      Snackbar(
+    material.ScaffoldMessenger.of(context).showSnackBar(
+      material.SnackBar(
         content: RichText(
           text: TextSpan(
             text: 'Copied ',
@@ -125,7 +125,6 @@ class NewsItem extends StatelessWidget {
             ],
           ),
         ),
-        extended: true,
       ),
     );
   }
