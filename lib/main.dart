@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FluentApp(
       title: 'XCA News',
-      theme:
-          ThemeData(brightness: Brightness.light, accentColor: Colors.orange),
-      darkTheme:
-          ThemeData(brightness: Brightness.dark, accentColor: Colors.orange),
+      theme: FluentThemeData(
+          brightness: Brightness.light, accentColor: Colors.orange),
+      darkTheme: FluentThemeData(
+          brightness: Brightness.dark, accentColor: Colors.orange),
       home: const MyHomePage(title: 'XCA News'),
     );
   }
@@ -103,21 +103,19 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
               }),
           displayMode: PaneDisplayMode.compact,
           items: pages
-              .map<NavigationPaneItem>(((e) =>
-                  PaneItem(icon: Icon(e.iconData), title: Text(e.title))))
+              .map<NavigationPaneItem>(((e) => PaneItem(
+                  icon: Icon(e.iconData),
+                  title: Text(e.title),
+                  body: const Text('body'))))
               .toList()),
-      content: NavigationBody.builder(
-          index: index,
-          itemBuilder: (ctx, index) {
-            return NewsListPage(newsPage: pages[index]);
-          }),
+      paneBodyBuilder: (item, body) => NewsListPage(newsPage: pages[index]),
     );
   }
 
   @override
   void onWindowClose() async {
-    bool _isPreventClose = await windowManager.isPreventClose();
-    if (_isPreventClose) {
+    bool isPreventClose = await windowManager.isPreventClose();
+    if (isPreventClose) {
       showDialog(
           context: context,
           builder: (_) {
