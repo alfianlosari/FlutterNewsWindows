@@ -106,9 +106,8 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
               .map<NavigationPaneItem>(((e) => PaneItem(
                   icon: Icon(e.iconData),
                   title: Text(e.title),
-                  body: const Text('body'))))
+                  body: NewsListPage(newsPage: pages[index]))))
               .toList()),
-      paneBodyBuilder: (item, body) => NewsListPage(newsPage: pages[index]),
     );
   }
 
